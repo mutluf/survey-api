@@ -18,10 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRSFeatures\OptionFeatures\Queries\" />
-    <Folder Include="CQRSFeatures\OptionFeatures\Requests\" />
-    <Folder Include="CQRSFeatures\QuestionFeatures\Queries\" />
-    <Folder Include="CQRSFeatures\QuestionFeatures\Requests\" />
+    <Folder Include="CQRSFeatures\OptionFeatures\" />
   </ItemGroup>
 
 </Project>

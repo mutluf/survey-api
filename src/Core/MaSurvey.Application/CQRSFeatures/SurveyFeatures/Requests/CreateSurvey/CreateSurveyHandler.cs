@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MaSurvey.Application.DTOs;
 using MaSurvey.Application.Repositories;
 using MaSurvey.Domain.Entities;
 using MediatR;
