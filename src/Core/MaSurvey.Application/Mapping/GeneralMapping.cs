@@ -10,6 +10,7 @@ namespace StockTracking.Application.Mapping
         public GeneralMapping()
         {
             CreateMap<Survey, CreateSurveyRequest>().ReverseMap();
+            CreateMap<Survey, SurveyDTO>().ReverseMap();
         }
     }
 }
