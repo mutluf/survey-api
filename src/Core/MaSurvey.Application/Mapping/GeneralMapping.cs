@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using MaSurvey.Application.CQRSFeatures.QuestionFeatures.Requests.CreateQuestion;
-using MaSurvey.Application.CQRSFeatures.SurveyFeatures.Requests.CreateSurvey;
 using MaSurvey.Application.DTOs;
+using MaSurvey.Application.Features.Commands.Options.CreateOption;
+using MaSurvey.Application.Features.Commands.Questions.CreateQuestion;
+using MaSurvey.Application.Features.Commands.Surveys.CreateSurvey;
 using MaSurvey.Domain.Entities;
 
 namespace StockTracking.Application.Mapping
@@ -16,6 +17,9 @@ namespace StockTracking.Application.Mapping
 
             CreateMap<Question, QuestionDTO>().ReverseMap();
             CreateMap<Question, CreateQuestionRequest>().ReverseMap();
+
+            CreateMap<Option, OptionDTO>().ReverseMap();
+            CreateMap<Option, CreateOptionRequest>().ReverseMap();
         }
     }
 }

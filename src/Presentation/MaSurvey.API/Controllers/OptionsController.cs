@@ -1,9 +1,6 @@
-﻿using MaSurvey.Application.CQRSFeatures.OptionFeatures.Queries.GetAllOptions;
-using MaSurvey.Application.CQRSFeatures.OptionFeatures.Requests.CreateOption;
-using MaSurvey.Application.CQRSFeatures.OptionFeatures.Requests.DeleteOption;
-using MaSurvey.Application.CQRSFeatures.SurveyFeatures.Queries.GetAllSurvey;
-using MaSurvey.Application.CQRSFeatures.SurveyFeatures.Requests.CreateSurvey;
-using MaSurvey.Application.CQRSFeatures.SurveyFeatures.Requests.DeleteSurvey;
+﻿using MaSurvey.Application.Features.Commands.Options.CreateOption;
+using MaSurvey.Application.Features.Commands.Options.DeleteOption;
+using MaSurvey.Application.Features.Queries.Options.GetAllOptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

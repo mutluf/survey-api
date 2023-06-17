@@ -1,6 +1,6 @@
-﻿using MaSurvey.Application.CQRSFeatures.SurveyFeatures.Queries.GetAllSurvey;
-using MaSurvey.Application.CQRSFeatures.SurveyFeatures.Requests.CreateSurvey;
-using MaSurvey.Application.CQRSFeatures.SurveyFeatures.Requests.DeleteSurvey;
+﻿using MaSurvey.Application.Features.Commands.Surveys.CreateSurvey;
+using MaSurvey.Application.Features.Commands.Surveys.DeleteSurvey;
+using MaSurvey.Application.Features.Queries.Surveys.GetAllSurvey;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +15,11 @@ namespace MaSurvey.API.Controllers
         {
             _mediator = mediator;
         }
-
+        
         [HttpPost]
-        public async Task<IActionResult> Post(CreateSurveyRequest request)
+        public async Task<IActionResult> Post([FromBody]CreateSurveyRequest request2)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request2);
             return Ok();
         }
 

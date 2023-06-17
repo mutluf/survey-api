@@ -2,6 +2,6 @@
 {
     public class SurveyDTO
     {
-        public int Id { get; set; }
+        public List<QuestionDTO> Questions { get; set; }
     }
 }
