@@ -4,6 +4,7 @@ using MaSurvey.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaSurvey.Persistence.Migrations
 {
     [DbContext(typeof(MaSurveyDbContext))]
-    partial class MaSurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230617153100_mig_prop")]
+    partial class mig_prop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,13 +32,6 @@ namespace MaSurvey.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OptionContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
@@ -58,15 +54,9 @@ namespace MaSurvey.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("QuestionContent")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuestionRate")
-                        .HasColumnType("int");
 
                     b.Property<int>("SurveyId")
                         .HasColumnType("int");
@@ -116,29 +106,11 @@ namespace MaSurvey.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SolvedCount")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Surveys");
                 });
@@ -342,17 +314,6 @@ namespace MaSurvey.Persistence.Migrations
                     b.Navigation("Survey");
                 });
 
-            modelBuilder.Entity("MaSurvey.Domain.Entities.Survey", b =>
-                {
-                    b.HasOne("MaSurvey.Domain.Entities.User", "User")
-                        .WithMany("Survey")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("MaSurvey.Domain.Entities.Role", null)
@@ -412,11 +373,6 @@ namespace MaSurvey.Persistence.Migrations
             modelBuilder.Entity("MaSurvey.Domain.Entities.Survey", b =>
                 {
                     b.Navigation("Questions");
-                });
-
-            modelBuilder.Entity("MaSurvey.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Survey");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,6 +6,7 @@ namespace MaSurvey.Application.Features.Commands.Surveys.CreateSurvey
 {
     public class CreateSurveyRequest : IRequest
     {
-        public List<QuestionDTO> Questions { get; set; }
+        public SurveyDTO Survey { get; set; }
+        //public List<QuestionDTO> Questions { get; set; }
     }
 }

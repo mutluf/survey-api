@@ -2,6 +2,7 @@
 {
     public class OptionDTO
     {
-        public string OptionName { get; set; }
+        public string OptionContent { get; set; }
+        public int VoteAmount { get; set; }
     }
 }

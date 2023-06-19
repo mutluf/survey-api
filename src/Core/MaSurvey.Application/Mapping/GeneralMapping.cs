@@ -13,9 +13,8 @@ namespace StockTracking.Application.Mapping
         {
             CreateMap<Survey, CreateSurveyRequest>().ReverseMap();
             CreateMap<Survey, SurveyDTO>().ReverseMap();
-
-
-            CreateMap<Question, QuestionDTO>().ReverseMap();
+           
+            CreateMap<Question, QuestionDTO>().ForMember(s => s.Options, o => o.MapFrom(a => a.Options)).ReverseMap();
             CreateMap<Question, CreateQuestionRequest>().ReverseMap();
 
             CreateMap<Option, OptionDTO>().ReverseMap();
