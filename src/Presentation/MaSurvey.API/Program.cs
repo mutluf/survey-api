@@ -1,3 +1,8 @@
+using MaSurvey.Domain.Entities;
+using MaSurvey.Infrastructure.Hubs;
+using MaSurvey.Infrastructure.SqlTableDependency;
+using MaSurvey.Infrastructure.SqlTableDependency.Middleware;
+
 using MaSurvey.Persistence;
 using MediatR;
 
@@ -10,7 +15,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 builder.Services.AddPersistenceService();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -24,10 +37,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowOrigin");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseDatabaseSubscription<DatabaseSubscription<Option>>("Options");
+app.UseEndpoints(endpoints =>
+{
+
+    endpoints.MapHub<OptionHub>("/optonshub");
+});
 
 app.MapControllers();
 
