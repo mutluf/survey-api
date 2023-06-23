@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using MaSurvey.Application.DTOs;
+using MaSurvey.Application.Features.Commands.Users;
 using MaSurvey.Domain.Entities;
 
-namespace StockTracking.Application.Mapping
-{
+namespace MaSurvey.Application.Mapping
+{   
     public class GeneralMapping:Profile
     {
         public GeneralMapping()
@@ -20,7 +21,9 @@ namespace StockTracking.Application.Mapping
             CreateMap<AnsweredQuestionDTO, AnsweredQuestion>().ForMember(s => s.Options, o => o.MapFrom(a => a.Options)).ReverseMap();
 
             CreateMap<AnsweredOption, AnsweredOptionDTO>().ReverseMap();
-            
+
+            CreateMap<CreateUserRequest, User>().ReverseMap();
+            CreateMap<LoginUserRequest, User>().ReverseMap();
         }
     }
 }

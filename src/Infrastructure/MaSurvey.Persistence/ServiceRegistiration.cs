@@ -13,9 +13,15 @@ namespace MaSurvey.Persistence
         public static void AddPersistenceService(this IServiceCollection services)
         {
             services.AddDbContext<MaSurveyDbContext>(options => options.UseSqlServer(Configuration.ConnectionString));
-            services.AddIdentityCore<User>(options =>
-                                              options.SignIn.RequireConfirmedAccount = true)
-                                              .AddEntityFrameworkStores<MaSurveyDbContext>();
+
+            services.AddIdentity<User, Role>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireDigit = true;
+                options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<MaSurveyDbContext>();
 
 
             services.AddScoped<IOptionRepository, OptionRepository>();
