@@ -21,6 +21,7 @@ namespace MaSurvey.Persistence
             services.AddScoped<IOptionRepository, OptionRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<ISurveyRepository, SurveyRepository>();
+            services.AddScoped<IResponseRepository, ResponseRepository>();
         }
     }
 

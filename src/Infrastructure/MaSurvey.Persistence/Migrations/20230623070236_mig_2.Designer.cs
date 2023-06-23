@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaSurvey.Persistence.Migrations
 {
     [DbContext(typeof(MaSurveyDbContext))]
-    [Migration("20230619053323_mig_3")]
-    partial class mig_3
+    [Migration("20230623070236_mig_2")]
+    partial class mig_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,58 @@ namespace MaSurvey.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnsweredQuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnsweredQuestionId");
+
+                    b.HasIndex("OptionId");
+
+                    b.ToTable("AnsweredOptions");
+                });
+
+            modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResponseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("ResponseId");
+
+                    b.ToTable("AnsweredQuestions");
+                });
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.Option", b =>
                 {
@@ -81,6 +133,32 @@ namespace MaSurvey.Persistence.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("MaSurvey.Domain.Entities.Response", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SurveyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SurveyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Responses");
+                });
+
             modelBuilder.Entity("MaSurvey.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -123,10 +201,6 @@ namespace MaSurvey.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Link")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SolvedCount")
@@ -323,6 +397,44 @@ namespace MaSurvey.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredOption", b =>
+                {
+                    b.HasOne("MaSurvey.Domain.Entities.AnsweredQuestion", "Question")
+                        .WithMany("Options")
+                        .HasForeignKey("AnsweredQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MaSurvey.Domain.Entities.Option", "Option")
+                        .WithMany("Options")
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Option");
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredQuestion", b =>
+                {
+                    b.HasOne("MaSurvey.Domain.Entities.Question", "Question")
+                        .WithMany("Questions")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MaSurvey.Domain.Entities.Response", "Response")
+                        .WithMany("Questions")
+                        .HasForeignKey("ResponseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("Response");
+                });
+
             modelBuilder.Entity("MaSurvey.Domain.Entities.Option", b =>
                 {
                     b.HasOne("MaSurvey.Domain.Entities.Question", "Question")
@@ -343,6 +455,23 @@ namespace MaSurvey.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Survey");
+                });
+
+            modelBuilder.Entity("MaSurvey.Domain.Entities.Response", b =>
+                {
+                    b.HasOne("MaSurvey.Domain.Entities.Survey", "Survey")
+                        .WithMany("Responses")
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MaSurvey.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Survey");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.Survey", b =>
@@ -407,14 +536,33 @@ namespace MaSurvey.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredQuestion", b =>
+                {
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("MaSurvey.Domain.Entities.Option", b =>
+                {
+                    b.Navigation("Options");
+                });
+
             modelBuilder.Entity("MaSurvey.Domain.Entities.Question", b =>
                 {
                     b.Navigation("Options");
+
+                    b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("MaSurvey.Domain.Entities.Response", b =>
+                {
+                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.Survey", b =>
                 {
                     b.Navigation("Questions");
+
+                    b.Navigation("Responses");
                 });
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.User", b =>

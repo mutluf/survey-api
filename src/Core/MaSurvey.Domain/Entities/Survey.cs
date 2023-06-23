@@ -9,8 +9,8 @@ namespace MaSurvey.Domain.Entities
         public int SolvedCount { get; set; }
         public User? User { get; set; }
         public int UserId { get; set; }
-        public string Link { get; set; } = "/api/Surveys/";
         public ICollection<Question>? Questions { get; set; }
+        public ICollection<Response>? Responses { get; set; }
         
     }
 }
