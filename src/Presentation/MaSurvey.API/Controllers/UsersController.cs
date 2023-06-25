@@ -47,8 +47,9 @@ namespace MaSurvey.API.Controllers
             else
             {
                 return StatusCode((int)HttpStatusCode.NotAcceptable, response);
+                //}
+                //return Ok(response);
             }
-
         }
     }
 }

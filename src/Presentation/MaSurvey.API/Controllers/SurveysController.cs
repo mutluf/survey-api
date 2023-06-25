@@ -3,12 +3,14 @@ using MaSurvey.Application.Features.Commands.Surveys.DeleteSurvey;
 using MaSurvey.Application.Features.Queries.Surveys.GetAllSurvey;
 using MaSurvey.Application.Features.Queries.Surveys.GetSurveyById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MaSurvey.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(AuthenticationSchemes ="User")]
     public class SurveysController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -16,7 +18,9 @@ namespace MaSurvey.API.Controllers
         {
             _mediator = mediator;
         }
-        
+
+
+        [Authorize(AuthenticationSchemes = "User")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateSurveyRequest request)
         {
