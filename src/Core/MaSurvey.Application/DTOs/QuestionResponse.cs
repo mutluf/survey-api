@@ -1,12 +1,11 @@
 ﻿namespace MaSurvey.Application.DTOs
 {
-    public class QuestionDTO
+    public class QuestionResponse
     {
         public int Id { get; set; }
         public string QuestionContent { get; set; }
         public string? QuestionType { get; set; }
         public int QuestionRate { get; set; }
-        public List<OptionDTO> Options { get; set; }
-        
+        public List<OptionResponse> Options { get; set; }
     }
 }

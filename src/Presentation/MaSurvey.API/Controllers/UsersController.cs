@@ -51,5 +51,12 @@ namespace MaSurvey.API.Controllers
                 //return Ok(response);
             }
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SignOut()
+        {
+            Response.Cookies.Delete("access_token");
+            return Ok();
+        }
     }
 }

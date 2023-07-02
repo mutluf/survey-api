@@ -4,6 +4,7 @@ using MaSurvey.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaSurvey.Persistence.Migrations
 {
     [DbContext(typeof(MaSurveyDbContext))]
-    partial class MaSurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230627074209_mig_4")]
+    partial class mig_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,23 +32,20 @@ namespace MaSurvey.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AnsweredQuestionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("OptionContent")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OptionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("QuestionId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OptionId");
+                    b.HasIndex("AnsweredQuestionId");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("OptionId");
 
                     b.ToTable("AnsweredOptions");
                 });
@@ -296,32 +295,6 @@ namespace MaSurvey.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MaSurvey.Domain.Entities.Vote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("AnsweredOptionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("OptionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnsweredOptionId");
-
-                    b.HasIndex("OptionId");
-
-                    b.ToTable("Votes");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -427,15 +400,17 @@ namespace MaSurvey.Persistence.Migrations
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredOption", b =>
                 {
+                    b.HasOne("MaSurvey.Domain.Entities.AnsweredQuestion", "Question")
+                        .WithMany("Options")
+                        .HasForeignKey("AnsweredQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MaSurvey.Domain.Entities.Option", "Option")
                         .WithMany("Options")
                         .HasForeignKey("OptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MaSurvey.Domain.Entities.AnsweredQuestion", "Question")
-                        .WithMany("Options")
-                        .HasForeignKey("QuestionId");
 
                     b.Navigation("Option");
 
@@ -511,21 +486,6 @@ namespace MaSurvey.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MaSurvey.Domain.Entities.Vote", b =>
-                {
-                    b.HasOne("MaSurvey.Domain.Entities.AnsweredOption", "AnsweredOption")
-                        .WithMany("Votes")
-                        .HasForeignKey("AnsweredOptionId");
-
-                    b.HasOne("MaSurvey.Domain.Entities.Option", "Option")
-                        .WithMany("Votes")
-                        .HasForeignKey("OptionId");
-
-                    b.Navigation("AnsweredOption");
-
-                    b.Navigation("Option");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("MaSurvey.Domain.Entities.Role", null)
@@ -577,11 +537,6 @@ namespace MaSurvey.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredOption", b =>
-                {
-                    b.Navigation("Votes");
-                });
-
             modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredQuestion", b =>
                 {
                     b.Navigation("Options");
@@ -590,8 +545,6 @@ namespace MaSurvey.Persistence.Migrations
             modelBuilder.Entity("MaSurvey.Domain.Entities.Option", b =>
                 {
                     b.Navigation("Options");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.Question", b =>

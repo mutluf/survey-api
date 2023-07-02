@@ -51,7 +51,6 @@ namespace MaSurvey.Infrastructure.SqlTableDependency
                 OptionDTO dto = new OptionDTO
                 {
                     OptionContent= option.OptionContent,
-                    VoteAmount=option.VoteAmount,
                 };
 
                 string jsonData = JsonSerializer.Serialize(dto);

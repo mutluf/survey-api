@@ -5,6 +5,6 @@ namespace MaSurvey.Application.Features.Queries.Surveys.GetSurveyById
 {
     public class GetSurveyByIdResponse
     {
-        public SurveyDTO Survey { get; set; }
+        public SurveyResponse Survey { get; set; }
     }
 }

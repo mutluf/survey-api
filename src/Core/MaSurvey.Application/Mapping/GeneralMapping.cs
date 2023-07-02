@@ -24,6 +24,16 @@ namespace MaSurvey.Application.Mapping
 
             CreateMap<CreateUserRequest, User>().ReverseMap();
             CreateMap<LoginUserRequest, User>().ReverseMap();
+
+
+
+
+
+            CreateMap<Survey, SurveyResponse>().ForMember(s => s.Questions, o => o.MapFrom(a => a.Questions)).ReverseMap();
+
+            CreateMap<Question, QuestionResponse>().ForMember(s => s.Options, o => o.MapFrom(a => a.Options)).ReverseMap();
+
+            CreateMap<Option, OptionResponse>().ForMember(s => s.Votes, o => o.MapFrom(a => a.Votes)).ReverseMap();
         }
     }
 }

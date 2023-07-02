@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MaSurvey.Application.Features.Commands.Surveys.CreateSurvey
 {
-    public class CreateSurveyHandler : IRequestHandler<CreateSurveyRequest>
+    public class CreateSurveyHandler : IRequestHandler<CreateSurveyRequest, CreateSurveyResponse>
     {
         private readonly IMapper _mapper;
         private readonly ISurveyRepository _surveyRepository;
@@ -16,14 +16,18 @@ namespace MaSurvey.Application.Features.Commands.Surveys.CreateSurvey
             _surveyRepository = surveyRepository;
         }
 
-        public async Task<Unit> Handle(CreateSurveyRequest request, CancellationToken cancellationToken)
+        public async Task<CreateSurveyResponse> Handle(CreateSurveyRequest request, CancellationToken cancellationToken)
         {
             Survey survey = _mapper.Map<Survey>(request.Survey);
                       
             await _surveyRepository.AddAysnc(survey);           
-            await _surveyRepository.SaveAysnc();         
+            await _surveyRepository.SaveAysnc();
 
-            return Unit.Value;
+            int id = survey.Id;
+            return new()
+            {
+                Id = id,
+            };
         }
     }
 }

@@ -9,6 +9,8 @@ namespace MaSurvey.Domain.Entities
         public Question? Question { get; set; }
         public int QuestionId { get; set; }
         public ICollection<AnsweredOption> Options { get; set;}
-        
+        public ICollection<Vote>? Votes { get; set; }
+
+
     }
 }

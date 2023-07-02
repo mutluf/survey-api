@@ -11,5 +11,6 @@ namespace MaSurvey.Domain.Entities
 
         public Question? Question { get; set; }
         public int QuestionId { get; set; }
+
     }
 }

@@ -21,14 +21,14 @@ namespace MaSurvey.Application.Features.Queries.Surveys.GetSurveyById
         public async Task<GetSurveyByIdResponse> Handle(GetSurveyByIdRequest request, CancellationToken cancellationToken)
         {
 
-            Survey survey = await _surveyRepository.Table.Include(q => q.Questions).ThenInclude(o => o.Options).FirstOrDefaultAsync(s=>s.Id==request.Id);
+            Survey survey = await _surveyRepository.Table.Include(q => q.Questions).ThenInclude(o => o.Options).ThenInclude(v=>v.Votes).FirstOrDefaultAsync(s=>s.Id==request.Id);
 
 
-            SurveyDTO dto= _mapper.Map<SurveyDTO>(survey);
+            SurveyResponse dto= _mapper.Map<SurveyResponse>(survey);
 
             return new()
             {
-                Survey = dto
+               Survey= dto,
             };
         }
     }

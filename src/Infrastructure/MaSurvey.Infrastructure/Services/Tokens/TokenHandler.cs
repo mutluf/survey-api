@@ -27,7 +27,7 @@ namespace MaSurvey.Infrastructure.Services.Tokens
             JwtSecurityToken securityToken = new(
                 audience: _configuration["Token:Audience"],
                 issuer: _configuration["Token:Issuer"],
-                expires: token.Expiration,
+                expires: token.Expiration.AddHours(72),
                 notBefore: DateTime.Now,
                 signingCredentials: signingCredentials,
                 

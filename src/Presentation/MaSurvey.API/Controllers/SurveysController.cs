@@ -41,7 +41,7 @@ namespace MaSurvey.API.Controllers
         public async Task<IActionResult> Get([FromRoute]GetSurveyByIdRequest request)
         {
             GetSurveyByIdResponse response = await _mediator.Send(request);
-            return Ok(response.Survey);
+            return Ok(response);
         }
 
         [HttpDelete("{Id}")]

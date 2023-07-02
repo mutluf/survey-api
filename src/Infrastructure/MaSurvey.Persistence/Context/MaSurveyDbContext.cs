@@ -16,5 +16,6 @@ namespace MaSurvey.Persistence.Context
         public DbSet<Response> Responses { get; set; }
         public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
         public DbSet<AnsweredOption> AnsweredOptions { get; set; }
+        public DbSet<Vote> Votes { get; set; }
     }
 }

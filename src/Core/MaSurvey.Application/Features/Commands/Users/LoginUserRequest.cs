@@ -42,7 +42,8 @@ namespace MaSurvey.Application.Features.Commands.Users
                 return new()
                 {
                     AccessToken = token,
-                    Message = "Giriş başarılı"
+                    Message = "Giriş başarılı",
+                    Id= user.Id
                 };
 
             }
@@ -56,5 +57,6 @@ namespace MaSurvey.Application.Features.Commands.Users
     {
         public Token AccessToken { get; set; }
         public string Message { get; set; }
+        public int Id { get; set; }
     }
 }
