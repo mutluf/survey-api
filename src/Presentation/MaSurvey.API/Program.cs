@@ -106,7 +106,7 @@ app.UseCors();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
-app.UseDatabaseSubscription<DatabaseSubscription<Option>>("Options");
+app.UseDatabaseSubscription<DatabaseSubscription<AnsweredOption>>("Options");
 app.UseEndpoints(endpoints =>
 {
 

@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MaSurvey.Persistence.Migrations
 {
-    /// <inheritdoc />
     public partial class mig_1 : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -189,7 +187,8 @@ namespace MaSurvey.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    QuestionContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QuestionContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QuestionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     QuestionRate = table.Column<int>(type: "int", nullable: false),
                     SurveyId = table.Column<int>(type: "int", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -199,6 +198,32 @@ namespace MaSurvey.Persistence.Migrations
                     table.PrimaryKey("PK_Questions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Questions_Surveys_SurveyId",
+                        column: x => x.SurveyId,
+                        principalTable: "Surveys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Responses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SurveyId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Responses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Responses_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Responses_Surveys_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
                         principalColumn: "Id",
@@ -228,35 +253,6 @@ namespace MaSurvey.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Responses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SurveyId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Responses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Responses_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete:ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Responses_Surveys_SurveyId",
-                        column: x => x.SurveyId,
-                        principalTable: "Surveys",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            
-
-            migrationBuilder.CreateTable(
                 name: "AnsweredQuestions",
                 columns: table => new
                 {
@@ -264,8 +260,7 @@ namespace MaSurvey.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ResponseId = table.Column<int>(type: "int", nullable: false),
                     QuestionId = table.Column<int>(type: "int", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -290,36 +285,88 @@ namespace MaSurvey.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AnsweredQuestionId = table.Column<int>(type: "int", nullable: false),
+                    OptionContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OptionId = table.Column<int>(type: "int", nullable: false),
+                    QuestionId = table.Column<int>(type: "int", nullable: true),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AnsweredOptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AnsweredOptions_AnsweredQuestions_AnsweredQuestionId",
-                        column: x => x.AnsweredQuestionId,
+                        name: "FK_AnsweredOptions_AnsweredQuestions_QuestionId",
+                        column: x => x.QuestionId,
                         principalTable: "AnsweredQuestions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AnsweredOptions_Options_OptionId",
                         column: x => x.OptionId,
                         principalTable: "Options",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AnsweredOptions_AnsweredQuestionId",
-                table: "AnsweredOptions",
-                column: "AnsweredQuestionId");
+            migrationBuilder.CreateTable(
+                name: "Votes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OptionId = table.Column<int>(type: "int", nullable: true),
+                    AnsweredOptionId = table.Column<int>(type: "int", nullable: true),
+                    ResponseId = table.Column<int>(type: "int", nullable: false),
+                    QuestionId = table.Column<int>(type: "int", nullable: false),
+                    AnsweredQuestionId = table.Column<int>(type: "int", nullable: false),
+                    SurveyId = table.Column<int>(type: "int", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Votes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Votes_AnsweredOptions_AnsweredOptionId",
+                        column: x => x.AnsweredOptionId,
+                        principalTable: "AnsweredOptions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Votes_AnsweredQuestions_AnsweredQuestionId",
+                        column: x => x.AnsweredQuestionId,
+                        principalTable: "AnsweredQuestions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Votes_Options_OptionId",
+                        column: x => x.OptionId,
+                        principalTable: "Options",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Votes_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Votes_Responses_ResponseId",
+                        column: x => x.ResponseId,
+                        principalTable: "Responses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Votes_Surveys_SurveyId",
+                        column: x => x.SurveyId,
+                        principalTable: "Surveys",
+                        principalColumn: "Id");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnsweredOptions_OptionId",
                 table: "AnsweredOptions",
                 column: "OptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnsweredOptions_QuestionId",
+                table: "AnsweredOptions",
+                column: "QuestionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnsweredQuestions_QuestionId",
@@ -394,14 +441,40 @@ namespace MaSurvey.Persistence.Migrations
                 name: "IX_Surveys_UserId",
                 table: "Surveys",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_AnsweredOptionId",
+                table: "Votes",
+                column: "AnsweredOptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_AnsweredQuestionId",
+                table: "Votes",
+                column: "AnsweredQuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_OptionId",
+                table: "Votes",
+                column: "OptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_QuestionId",
+                table: "Votes",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_ResponseId",
+                table: "Votes",
+                column: "ResponseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_SurveyId",
+                table: "Votes",
+                column: "SurveyId");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AnsweredOptions");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -418,13 +491,19 @@ namespace MaSurvey.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Votes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AnsweredOptions");
+
+            migrationBuilder.DropTable(
                 name: "AnsweredQuestions");
 
             migrationBuilder.DropTable(
                 name: "Options");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Responses");

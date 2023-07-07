@@ -34,21 +34,21 @@ namespace MaSurvey.Infrastructure.SqlTableDependency
             _tableDependency = new SqlTableDependency<T>(_configuration.GetConnectionString("DefaultConnection"), tableName);
             _tableDependency.OnChanged += async (o, e) =>
             {
-                List<Option> datas;
+                List<AnsweredOption> datas;
                 T dataBack = new T();
                 //UserManager<AppUser> _userManager;
-                Option option = null;
+                AnsweredOption option = null;
                 //AppUser user = null;
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
                     // _userManager = scope.ServiceProvider.GetService<UserManager<AppUser>>();
                     dataBack = e.Entity;
 
-                     option = (Option)Convert.ChangeType(dataBack, typeof(Option));
+                     option = (AnsweredOption)Convert.ChangeType(dataBack, typeof(Option));
                     // user = await _userManager.FindByIdAsync(option.UserId.ToString());
                 }               
 
-                OptionDTO dto = new OptionDTO
+                AnsweredOptionDTO dto = new AnsweredOptionDTO
                 {
                     OptionContent= option.OptionContent,
                 };

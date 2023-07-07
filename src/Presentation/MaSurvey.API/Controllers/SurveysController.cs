@@ -1,5 +1,6 @@
 ﻿using MaSurvey.Application.Features.Commands.Surveys.CreateSurvey;
 using MaSurvey.Application.Features.Commands.Surveys.DeleteSurvey;
+using MaSurvey.Application.Features.Queries.Results;
 using MaSurvey.Application.Features.Queries.Surveys.GetAllSurvey;
 using MaSurvey.Application.Features.Queries.Surveys.GetSurveyById;
 using MediatR;
@@ -24,8 +25,8 @@ namespace MaSurvey.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateSurveyRequest request)
         {
-            await _mediator.Send(request);
-            return Ok();
+            CreateSurveyResponse response =  await _mediator.Send(request);
+            return Ok(response);
         }
 
         [HttpGet]
@@ -44,11 +45,20 @@ namespace MaSurvey.API.Controllers
             return Ok(response);
         }
 
+
         [HttpDelete("{Id}")]
         public async Task<IActionResult> Delete([FromRoute] DeleteSurveyRequest request)
         {
             await _mediator.Send(request);
             return Ok();
+        }
+
+
+        [HttpGet("{Id}/result")]
+        public async Task<IActionResult> Get([FromRoute] GetResultByIdRequest request)
+        {
+            GetResultByIdResponse response = await _mediator.Send(request);
+            return Ok(response);
         }
     }
 }

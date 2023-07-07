@@ -11,6 +11,6 @@ namespace MaSurvey.Domain.Entities
         public int UserId { get; set; }
         public ICollection<Question>? Questions { get; set; }
         public ICollection<Response>? Responses { get; set; }
-        
+
     }
 }

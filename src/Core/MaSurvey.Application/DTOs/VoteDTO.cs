@@ -7,6 +7,5 @@ namespace MaSurvey.Application.DTOs
         public int Id { get; set; }
         public int? OptionId { get; set; }
         public int? AnsweredOptionId { get; set; }
-
     }
 }

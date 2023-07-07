@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaSurvey.Persistence.Migrations
 {
     [DbContext(typeof(MaSurveyDbContext))]
-    [Migration("20230702045536_mig_6")]
-    partial class mig_6
+    [Migration("20230703085220_mig_3")]
+    partial class mig_3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,9 +42,6 @@ namespace MaSurvey.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VoteAmount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -98,6 +95,9 @@ namespace MaSurvey.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VoteAmount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -298,6 +298,37 @@ namespace MaSurvey.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MaSurvey.Domain.Entities.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AnsweredOptionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("OptionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResponseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnsweredOptionId");
+
+                    b.HasIndex("OptionId");
+
+                    b.HasIndex("ResponseId");
+
+                    b.ToTable("Votes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -487,6 +518,29 @@ namespace MaSurvey.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MaSurvey.Domain.Entities.Vote", b =>
+                {
+                    b.HasOne("MaSurvey.Domain.Entities.AnsweredOption", "AnsweredOption")
+                        .WithMany("Votes")
+                        .HasForeignKey("AnsweredOptionId");
+
+                    b.HasOne("MaSurvey.Domain.Entities.Option", "Option")
+                        .WithMany("Votes")
+                        .HasForeignKey("OptionId");
+
+                    b.HasOne("MaSurvey.Domain.Entities.Response", "Response")
+                        .WithMany()
+                        .HasForeignKey("ResponseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnsweredOption");
+
+                    b.Navigation("Option");
+
+                    b.Navigation("Response");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("MaSurvey.Domain.Entities.Role", null)
@@ -538,6 +592,11 @@ namespace MaSurvey.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredOption", b =>
+                {
+                    b.Navigation("Votes");
+                });
+
             modelBuilder.Entity("MaSurvey.Domain.Entities.AnsweredQuestion", b =>
                 {
                     b.Navigation("Options");
@@ -546,6 +605,8 @@ namespace MaSurvey.Persistence.Migrations
             modelBuilder.Entity("MaSurvey.Domain.Entities.Option", b =>
                 {
                     b.Navigation("Options");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.Question", b =>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MaSurvey.Application.DTOs;
 using MaSurvey.Application.Features.Commands.Users;
+using MaSurvey.Application.Features.Queries.Results;
 using MaSurvey.Domain.Entities;
 
 namespace MaSurvey.Application.Mapping
@@ -9,6 +10,7 @@ namespace MaSurvey.Application.Mapping
     {
         public GeneralMapping()
         {
+            CreateMap<GetResultByIdResponse, Survey>().ReverseMap();
             
             CreateMap<Survey, SurveyDTO>().ForMember(s => s.Questions, o => o.MapFrom(a => a.Questions)).ReverseMap();
 
@@ -19,6 +21,8 @@ namespace MaSurvey.Application.Mapping
 
             CreateMap<Response, ResponseDTO>().ForMember(s => s.Questions, o => o.MapFrom(a => a.Questions)).ReverseMap();
             CreateMap<AnsweredQuestionDTO, AnsweredQuestion>().ForMember(s => s.Options, o => o.MapFrom(a => a.Options)).ReverseMap();
+            CreateMap<AnsweredOption, AnsweredOptionDTO>().ReverseMap();
+            CreateMap<Vote, VoteDTO>().ReverseMap();
 
             CreateMap<AnsweredOption, AnsweredOptionDTO>().ReverseMap();
 
@@ -33,7 +37,15 @@ namespace MaSurvey.Application.Mapping
 
             CreateMap<Question, QuestionResponse>().ForMember(s => s.Options, o => o.MapFrom(a => a.Options)).ReverseMap();
 
-            CreateMap<Option, OptionResponse>().ForMember(s => s.Votes, o => o.MapFrom(a => a.Votes)).ReverseMap();
+            CreateMap<Option, OptionResponse>().ForMember(s => s.AnsweredOptions, o => o.MapFrom(a => a.AnsweredOptions)).ReverseMap();
+
+
+
+            CreateMap<Survey, GetResultByIdResponse>().ForMember(s => s.Questions, o => o.MapFrom(a => a.Questions)).ReverseMap();
+
+            CreateMap<Question, QuestionDTO>().ForMember(s => s.Options, o => o.MapFrom(a => a.Options)).ReverseMap();
+
+            CreateMap<Option, OptionDTO>().ReverseMap();
         }
     }
 }

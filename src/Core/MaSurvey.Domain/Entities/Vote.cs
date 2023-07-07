@@ -6,6 +6,7 @@ namespace MaSurvey.Domain.Entities
     {
         public Option? Option { get; set; }
         public int? OptionId { get; set; }
+
         public AnsweredOption? AnsweredOption { get; set; }
         public int? AnsweredOptionId { get; set; }
     }

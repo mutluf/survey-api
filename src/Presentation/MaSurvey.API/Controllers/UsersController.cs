@@ -52,10 +52,14 @@ namespace MaSurvey.API.Controllers
             }
         }
 
-        [HttpGet("[action]")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> SignOut()
         {
-            Response.Cookies.Delete("access_token");
+            Response.Cookies.Append("access_token", "", new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(-1),
+                Path = "/"
+            });
             return Ok();
         }
     }

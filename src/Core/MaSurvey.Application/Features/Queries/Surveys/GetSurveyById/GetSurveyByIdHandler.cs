@@ -4,7 +4,6 @@ using MaSurvey.Application.Repositories;
 using MaSurvey.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MaSurvey.Application.Features.Queries.Surveys.GetSurveyById
 {

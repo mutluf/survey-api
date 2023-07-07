@@ -13,5 +13,6 @@ namespace MaSurvey.Application.Repositories
         bool Update(T Model);
         Task<int> SaveAysnc();
         void Delete(T Model);
+
     }
 }

@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string OptionContent { get; set; }
         public int VoteAmount { get; set; }
-        public ICollection<VoteDTO> Votes { get; set; }
+        public ICollection<AnsweredOptionDTO> AnsweredOptions { get; set; }
     }
 }

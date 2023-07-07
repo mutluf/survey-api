@@ -7,6 +7,5 @@
   
         public int OptionId { get; set; }
         public int QuestionId { get; set; }
-        public ICollection<VoteDTO> Votes { get; set; }
     }
 }

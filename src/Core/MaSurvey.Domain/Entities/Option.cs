@@ -8,7 +8,7 @@ namespace MaSurvey.Domain.Entities
         public int VoteAmount { get; set; }
         public Question? Question { get; set; }
         public int QuestionId { get; set; }
-        public ICollection<AnsweredOption> Options { get; set;}
+        public ICollection<AnsweredOption> AnsweredOptions { get; set;}
         public ICollection<Vote>? Votes { get; set; }
 
 

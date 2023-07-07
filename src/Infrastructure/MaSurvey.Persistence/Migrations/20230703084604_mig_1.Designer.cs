@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaSurvey.Persistence.Migrations
 {
     [DbContext(typeof(MaSurveyDbContext))]
-    [Migration("20230702163841_mig_9")]
-    partial class mig_9
+    [Migration("20230703084604_mig_1")]
+    partial class mig_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -309,17 +309,37 @@ namespace MaSurvey.Persistence.Migrations
                     b.Property<int?>("AnsweredOptionId")
                         .HasColumnType("int");
 
+                    b.Property<int>("AnsweredQuestionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("OptionId")
                         .HasColumnType("int");
 
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResponseId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SurveyId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AnsweredOptionId");
 
+                    b.HasIndex("AnsweredQuestionId");
+
                     b.HasIndex("OptionId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("ResponseId");
+
+                    b.HasIndex("SurveyId");
 
                     b.ToTable("Votes");
                 });
@@ -519,13 +539,41 @@ namespace MaSurvey.Persistence.Migrations
                         .WithMany("Votes")
                         .HasForeignKey("AnsweredOptionId");
 
+                    b.HasOne("MaSurvey.Domain.Entities.AnsweredQuestion", "AnsweredQuestion")
+                        .WithMany()
+                        .HasForeignKey("AnsweredQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MaSurvey.Domain.Entities.Option", "Option")
                         .WithMany("Votes")
                         .HasForeignKey("OptionId");
 
+                    b.HasOne("MaSurvey.Domain.Entities.Question", "Question")
+                        .WithMany("Votes")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MaSurvey.Domain.Entities.Response", "Response")
+                        .WithMany()
+                        .HasForeignKey("ResponseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MaSurvey.Domain.Entities.Survey", null)
+                        .WithMany("Votes")
+                        .HasForeignKey("SurveyId");
+
                     b.Navigation("AnsweredOption");
 
+                    b.Navigation("AnsweredQuestion");
+
                     b.Navigation("Option");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("Response");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -601,6 +649,8 @@ namespace MaSurvey.Persistence.Migrations
                     b.Navigation("Options");
 
                     b.Navigation("Questions");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.Response", b =>
@@ -613,6 +663,8 @@ namespace MaSurvey.Persistence.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("Responses");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("MaSurvey.Domain.Entities.User", b =>
