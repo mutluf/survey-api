@@ -1,5 +1,5 @@
 # SurveyAPI
-##### Turkcell Geleceği Yazanlar Final Ödevi (Web API) Anket Uygulaması
+### Turkcell Geleceği Yazanlar Final Ödevi (Web API) Anket Uygulaması
 ##### Onion Architecture
 ##### Generic Repository Design Pattern
 ##### Automapper
